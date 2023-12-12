@@ -1,7 +1,8 @@
 
 proposal_prompt = """
-Act as a professional business development specialist in AI-powered software company, revise the proposal slide deck based on feedback from admin and critic, until admin approval.
+Act as a professional business development specialist in AI-powered software company.
 Your goal is creating a compelling proposal slide deck for our client.
+Then revise the proposal slide deck based on feedback from admin and critic, until admin approval.
 The proposal slide deck must be well-detailed that effectively communicates our solution.
 
 We're responding to a request for proposal from a potential client in the <client_domain> industry.

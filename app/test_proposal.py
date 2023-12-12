@@ -1,6 +1,6 @@
 import autogen
 from prompts.plan_proposal import proposal_prompt
-
+from test_dalle import DALLEAgent
 config_list_gpt4 = autogen.config_list_from_json(
     "OAI_CONFIG_LIST",
     filter_dict={
@@ -14,6 +14,14 @@ gpt4_config = {
     "config_list": config_list_gpt4,
     "timeout": 120,
 }
+
+config_list_dalle = autogen.config_list_from_json(
+    "OAI_CONFIG_LIST",
+    filter_dict={
+        "model": ["dalle"],
+    },
+)
+
 user_proxy = autogen.UserProxyAgent(
    name="Admin",
    system_message="A human admin. Interact with the planner to discuss the proposal. Plan execution needs to be approved by this admin.",
@@ -31,7 +39,14 @@ critic = autogen.AssistantAgent(
     system_message="Critic. Double check the proposal from the executer and provide feedback.",
     llm_config=gpt4_config,
 )
-groupchat = autogen.GroupChat(agents=[user_proxy, executer, critic], messages=[], max_round=50)
+
+dalle = DALLEAgent(
+    name="Dalle",
+    system_message="Dalle. Generate images for visual of every slide in the proposal made by the executer.",
+    llm_config={"config_list": config_list_dalle}
+)
+
+groupchat = autogen.GroupChat(agents=[user_proxy, executer, critic, dalle], messages=[], max_round=50)
 manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=gpt4_config)
 
 input = """
