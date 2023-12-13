@@ -37,4 +37,5 @@ The proposal slides should cover the following key elements:
    - Highlight success stories or success metrics that exemplify our track record of delivering results. These stories should emphasize our ability to meet or exceed client expectations, as evidenced by <success_stories_list>.
 
 Please ensure that each of these elements is presented in the proposal slides. Your goal is to create a persuasive and informative proposal that resonates with the client's needs and convinces them of the value we can provide.
+Finally, store the draft of proposal in text format.
 """

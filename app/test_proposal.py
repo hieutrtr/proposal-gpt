@@ -1,6 +1,8 @@
 import autogen
 from prompts.plan_proposal import proposal_prompt
 from test_dalle import DALLEAgent
+from functions.draft_proposal import store_draft_proposal_schema, store_draft_proposal
+
 config_list_gpt4 = autogen.config_list_from_json(
     "OAI_CONFIG_LIST",
     filter_dict={
@@ -8,11 +10,24 @@ config_list_gpt4 = autogen.config_list_from_json(
     },
 )
 
-gpt4_config = {
+common_config = {
     "cache_seed": 42,  # change the cache_seed for different trials
     "temperature": 0,
     "config_list": config_list_gpt4,
     "timeout": 120,
+}
+
+draft_config = {
+    "cache_seed": 42,  # change the cache_seed for different trials
+    "temperature": 0,
+    "config_list": config_list_gpt4,
+    "timeout": 120,
+    "tools": [
+        {
+            "type": "function",
+            "function": store_draft_proposal_schema,
+        }
+    ]
 }
 
 config_list_dalle = autogen.config_list_from_json(
@@ -24,30 +39,38 @@ config_list_dalle = autogen.config_list_from_json(
 
 user_proxy = autogen.UserProxyAgent(
    name="Admin",
-   system_message="A human admin. Interact with the planner to discuss the proposal. Plan execution needs to be approved by this admin.",
+   system_message="""A human admin. Interact with the bd_draft and bd_critic to draft the proposal, bd_critic will verify and give comments to improve the draft proposal content and structure. 
+   The draft of proposal needs to be approved by this admin.
+   """,
    code_execution_config=False,
 )
 
-executer = autogen.AssistantAgent(
-    name="Executer",
+draft = autogen.AssistantAgent(
+    name="bd_draft",
     system_message=proposal_prompt,
-    llm_config=gpt4_config,
+    llm_config=draft_config,
+)
+
+draft.register_function(
+    function_map={
+        "store_draft_proposal": store_draft_proposal,
+    }
 )
 
 critic = autogen.AssistantAgent(
-    name="Critic",
+    name="bd_critic",
     system_message="Critic. Double check the proposal from the executer and provide feedback.",
-    llm_config=gpt4_config,
+    llm_config=common_config,
 )
 
-dalle = DALLEAgent(
-    name="Dalle",
-    system_message="Dalle. Generate images for visual of every slide in the proposal made by the executer.",
-    llm_config={"config_list": config_list_dalle}
-)
+# dalle = DALLEAgent(
+#     name="Dalle",
+#     system_message="Dalle. Generate images for visual of every slide in the proposal made by the executer.",
+#     llm_config={"config_list": config_list_dalle}
+# )
 
-groupchat = autogen.GroupChat(agents=[user_proxy, executer, critic, dalle], messages=[], max_round=50)
-manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=gpt4_config)
+groupchat = autogen.GroupChat(agents=[user_proxy, draft, critic], messages=[], max_round=50)
+manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=common_config)
 
 input = """
 <client_domain> (Client Domain): Healthcare
