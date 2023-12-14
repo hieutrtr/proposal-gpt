@@ -22,11 +22,8 @@ draft_config = {
     "temperature": 0,
     "config_list": config_list_gpt4,
     "timeout": 120,
-    "tools": [
-        {
-            "type": "function",
-            "function": store_draft_proposal_schema,
-        }
+    "functions": [
+        store_draft_proposal_schema
     ]
 }
 
