@@ -12,7 +12,8 @@ from autogen import AssistantAgent, Agent, UserProxyAgent, ConversableAgent
 from autogen.agentchat.contrib.img_utils import get_image_data, _to_pil
 from termcolor import colored
 import random
-
+import urllib.request
+from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 from openai import OpenAI
 import os
 import PIL
@@ -68,11 +69,11 @@ def dalle_call(client: OpenAI, model: str, prompt: str, size: str, quality: str,
           n=n,
         )
     image_url = response.data[0].url
-    print("Image URL:", image_url)
-    img_data = get_image_data(image_url)
-    cache[key] = img_data
-
-    return img_data
+    # print("Image URL:", image_url)
+    # img_data = get_image_data(image_url)
+    cache[key] = image_url
+    
+    return image_url
 
 def extract_img(agent: Agent) -> PIL.Image:
     """
@@ -132,24 +133,42 @@ class DALLEAgent(ConversableAgent):
             messages = self._oai_messages[sender]
 
         prompt = messages[-1]["content"]
-        # TODO: integrate with autogen.oai. For instance, with caching for the API call
-        img_data = dalle_call(
-            client=self.client,
-            model="dall-e-3",
-            prompt=prompt,
-            size="1024x1024", # TODO: the size should be flexible, deciding landscape, square, or portrait mode.
-            quality="standard",
-            n=1,
-        )
-        out_message = f"<img {img_data}>"
-        return True, out_message
+
+        # Manipulate response for images generation.
+        image_descriptions = json.loads(prompt)
+        urls = []
+        for ele in image_descriptions:
+            slide_title = ele.get("slide_title")
+            image_description = ele.get("image_description")
+
+            prompt = f"{self.system_message}\nSlide: {slide_title}\nDescription: {image_description}"
+            # TODO: integrate with autogen.oai. For instance, with caching for the API call
+            img_url = dalle_call(
+                client=self.client,
+                model="dall-e-3",
+                prompt=prompt,
+                size="1024x1024", # TODO: the size should be flexible, deciding landscape, square, or portrait mode.
+                quality="standard",
+                n=1,
+            )
+            filename = './images/'+slide_title+".jpg"
+            urllib.request.urlretrieve(img_url, filename)
+            urls.append(filename)
+        final_images = []
+        for ele, url in zip(image_descriptions, urls):
+            final_images.append({"slide_title": ele.get("slide_title"), "url": url})
+        print("final_images")
+        print(final_images)
+        with open('image.json', 'w') as f:
+            json.dump(final_images, f)
+        return True, "TERMINATE"
     
 # dalle = DALLEAgent(name="Dalle", llm_config={"config_list": config_list_dalle})
 
 # user_proxy = autogen.UserProxyAgent(
 #     name="User_proxy",
 #     system_message="A human admin.",
-#     human_input_mode="NEVER",
+#     human_input_mode="NEVER", 
 #     max_consecutive_auto_reply=0
 # )
 

@@ -3,3 +3,4 @@ OAI_CONFIG_LIST
 .venv
 */__pycache__
 */*/__pycache__
+*/chromadb/

@@ -32,10 +32,10 @@ def store_draft_proposal(draft):
     if not isinstance(draft, str):
         raise TypeError("Draft of proposal must be a string.")
     # Function implementation...
-    with open("/root/projects/proposal-gpt/draft_proposal.txt", "w") as f:
+    with open("./draft_proposal.txt", "w") as f:
         f.write(draft)
     # False case
-    if not os.path.exists("/root/projects/proposal-gpt/draft_proposal.txt"):
+    if not os.path.exists("./draft_proposal.txt"):
         return False
     return True
     
