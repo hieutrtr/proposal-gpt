@@ -4,22 +4,16 @@ import pdb
 import os
 import re
 
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Dict, List, Optional, Union
 
 import autogen
-from autogen import AssistantAgent, Agent, UserProxyAgent, ConversableAgent
+from autogen.agentchat import Agent, ConversableAgent
 
-from autogen.agentchat.contrib.img_utils import get_image_data, _to_pil
-from termcolor import colored
-import random
+from autogen.agentchat.contrib.img_utils import _to_pil
 import urllib.request
-from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 from openai import OpenAI
 import os
 import PIL
-import matplotlib.pyplot as plt
-
-from autogen.agentchat.contrib.multimodal_conversable_agent import MultimodalConversableAgent
 
 config_list_dalle = autogen.config_list_from_json(
     "OAI_CONFIG_LIST",
