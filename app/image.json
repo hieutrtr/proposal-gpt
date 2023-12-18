@@ -1,34 +1,34 @@
 [
     {
         "slide_title": "Executive Summary",
-        "url": "./images/Executive Summary.jpg"
+        "url": "./images/executive_summary.jpg"
     },
     {
         "slide_title": "Understanding Client Pain Points",
-        "url": "./images/Understanding Client Pain Points.jpg"
+        "url": "./images/understanding_client_pain_points.jpg"
     },
     {
         "slide_title": "Solution Overview",
-        "url": "./images/Solution Overview.jpg"
+        "url": "./images/solution_overview.jpg"
     },
     {
         "slide_title": "How the Solution Works",
-        "url": "./images/How the Solution Works.jpg"
+        "url": "./images/how_the_solution_works.jpg"
     },
     {
         "slide_title": "Case Studies",
-        "url": "./images/Case Studies.jpg"
+        "url": "./images/case_studies.jpg"
     },
     {
         "slide_title": "Success Stories and Metrics",
-        "url": "./images/Success Stories and Metrics.jpg"
+        "url": "./images/success_stories_and_metrics.jpg"
     },
     {
         "slide_title": "Timeline, Costs, and Payment Terms",
-        "url": "./images/Timeline, Costs, and Payment Terms.jpg"
+        "url": "./images/timeline_costs_and_payment_terms.jpg"
     },
     {
         "slide_title": "Conclusion",
-        "url": "./images/Conclusion.jpg"
+        "url": "./images/conclusion.jpg"
     }
 ]

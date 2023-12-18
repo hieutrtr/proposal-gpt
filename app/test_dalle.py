@@ -145,6 +145,8 @@ class DALLEAgent(ConversableAgent):
                 quality="standard",
                 n=1,
             )
+            slide_title = slide_title.lower().replace(" ", "_").replace(".", "").replace(",", "").replace("-", "_")
+            print(slide_title)
             filename = './images/'+slide_title+".jpg"
             urllib.request.urlretrieve(img_url, filename)
             urls.append(filename)
