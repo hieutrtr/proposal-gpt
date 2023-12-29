@@ -24,6 +24,25 @@ store_draft_proposal_schema = {
   "description": "This is a function allowing bd_draft to input the result as a draft of proposal to store in free text format.",
 }
 
+store_final_proposal_schema = {
+            "name": "store_final_proposal",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "final": {
+                        "type": "string",
+                        "description": (
+                            "Enter the final of proposal in markdown format."
+                        ),
+                    }
+                },
+                "required": [
+                    "final"
+                ]
+            },
+            "description": "This is a function allowing bd_final to input the final proposal to store in markdown format.",
+        }
+
 def store_draft_proposal(draft):
     """
     Store draft of proposal in a local file.
@@ -36,6 +55,25 @@ def store_draft_proposal(draft):
         f.write(draft)
     # False case
     if not os.path.exists("./draft_proposal.txt"):
+        return False
+    return True
+
+def store_final_proposal(final):
+    """
+    Store draft of proposal in a local file.
+    """
+    # Exception
+    print("*"*100)
+    print("*"*100)
+    print("*"*100)
+    print("Called store_final_proposal")
+    if not isinstance(final, str):
+        raise TypeError("Draft of proposal must be a string.")
+    # Function implementation...
+    with open("./final_proposal.md", "w") as f:
+        f.write(final)
+    # False case
+    if not os.path.exists("./final_proposal.md"):
         return False
     return True
     
