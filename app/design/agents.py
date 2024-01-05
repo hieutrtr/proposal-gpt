@@ -4,7 +4,7 @@ from functions.draft_proposal import store_draft_proposal
 from custom_agents.dalle import DALLEAgent
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 
-admin_retrieval_agent = {
+retrieval_admin_agent = {
     "name": "admin",
     "type": RetrieveUserProxyAgent,
     "system_message": """Assistant who has the content of draft proposal.""",

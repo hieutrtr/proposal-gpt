@@ -5,7 +5,7 @@ from custom_agents.dalle import DALLEAgent
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 from functions.draft_proposal import store_final_proposal
 
-admin_retrieval_agent = {
+finalize_admin_agent = {
     "name": "admin",
     "type": RetrieveUserProxyAgent,
     "system_message": """Assistant who has the content of draft proposal and list image url.""",

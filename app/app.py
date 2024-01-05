@@ -1,6 +1,14 @@
 from proposal.configs import *
 from proposal.agents import *
 from proposal.group_chat import ProposalGroupChat
+from design.configs import *
+from design.agents import *
+from design.group_chat import ProposalDesignGroupChat
+from finalize_proposal.configs import *
+from finalize_proposal.agents import *
+from finalize_proposal.group_chat import ProposalFinalizeGroupChat
+from organization.org_chart import ProposalOrgChart
+from organization.configs import org_chart_config
 
 input = """
 <client_domain> (Client Domain): Healthcare
@@ -52,9 +60,39 @@ Metrics: Data security compliance, risk mitigation, client feedback.
 """
 
 if __name__ == "__main__":
-    proposal_agents = createProposalAgents(agents=[admin_agent, proposal_writer_agent, proposal_critic_agent], 
-                                           configs=[admin_config, proposal_writer_config, proposal_critic_config])
+    proposal_agents = createProposalAgents(agents=[proposal_admin_agent, proposal_writer_agent, proposal_critic_agent], 
+                                           configs=[proposal_admin_config, proposal_writer_config, proposal_critic_config])
+    design_agents = createProposalAgents(agents=[retrieval_admin_agent, visualizer_agent, designer_agent], 
+                                         configs=[retrieval_admin_config, visualizer_config, designer_config])
+    finalize_agents = createProposalAgents(agents=[finalize_admin_agent, proposal_finalizer_agent], 
+                                           configs=[finalize_admin_config, proposal_finalizer_config])
+    
     proposal_group_chat = ProposalGroupChat(agents=proposal_agents, config=group_chat_config)
-    # proposal_group_chat.set_human_mq(url)
-    # proposal_group_chat.start_chat(stream_chatlog=True)
-    proposal_group_chat.startGroupChat(input=input)
+    design_group_chat = ProposalDesignGroupChat(agents=design_agents, config=group_chat_config)
+    finalize_group_chat = ProposalFinalizeGroupChat(agents=finalize_agents, config=group_chat_config)
+
+    proposal_team = proposal_group_chat.formTeam(name="Proposal", 
+                                 feature="Develop and write the initial content for the slide deck, focusing on key messages, project objectives, and essential information.", 
+                                 deliverable="A draft of the slide deck with text content, including notes on suggested imagery.", 
+                                 communication="Share the draft content with the Design Team for visual enhancement."
+                                 )
+    
+    design_team = design_group_chat.formTeam(name="Design",
+                                 feature="Design and provide relevant images, graphics, and visual elements that complement and enhance the textual content from the Proposal Team.",
+                                 deliverable="A set of images and graphic elements tailored to fit the proposed slide content.",
+                                 communication="Provide the designed images and graphics to the Finalize Team for slide deck assembly."
+                                 )
+    finalize_team = finalize_group_chat.formTeam(name="Finalize",
+                                 feature="Integrate the content from the Proposal Team and the images from the Design Team into a final, cohesive slide deck.",
+                                 deliverable="The completed slide deck, ready for review and presentation.",
+                                 communication="Present the final slide deck to the Proposal and Design Teams for feedback and approval."
+                                 )
+    org_chart = ProposalOrgChart(epic="Enable efficient collaboration among the Proposal Team, Design Team, and Finalize Team to develop a comprehensive and visually appealing slide deck for project presentations.", 
+                                 teams=[proposal_team, design_team, finalize_team], config=org_chart_config
+                                 )
+
+    org_chart.startUp(input=input)
+    
+    # proposal_group_chat.startGroupChat(input=input)
+    # design_group_chat.startGroupChat(input="""Generate images for the proposal.""")
+    # finalize_group_chat.startGroupChat(input=input)

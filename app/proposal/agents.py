@@ -2,7 +2,7 @@ import autogen
 from prompts.plan_proposal import proposal_prompt
 from functions.draft_proposal import store_draft_proposal
 
-admin_agent = {
+proposal_admin_agent = {
     "name": "admin",
     "type": autogen.UserProxyAgent,
     "system_message": """A human admin. Interact with the proposal_writer and proposal_critic to draft the proposal, proposal_critic will verify and give comments to improve the draft proposal content and structure. 

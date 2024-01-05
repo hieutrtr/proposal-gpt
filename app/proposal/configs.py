@@ -9,7 +9,7 @@ config_list = autogen.config_list_from_json(
         "model": ["gpt-4"],
     },
 )
-admin_config = {
+proposal_admin_config = {
     "cache_seed": 42,  # change the cache_seed for different trials
     "temperature": 0,
     "config_list": config_list,

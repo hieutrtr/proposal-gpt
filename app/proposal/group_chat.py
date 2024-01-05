@@ -1,6 +1,7 @@
 from autogen import GroupChat, GroupChatManager
 
 manager = None
+GROUP_PROMPT = "This group chat is about {}. Please work together to solve the problem."
 
 class ProposalGroupChat:
     def __init__(self, agents=[], config={}):
@@ -14,9 +15,19 @@ class ProposalGroupChat:
 
     def startGroupChat(self, input):
         init_agents = self.agents[0]
-        groupchat = GroupChat(agents=self.agents, messages=[], max_round=50)
+        groupchat = GroupChat(agents=self.agents, messages=[GROUP_PROMPT.format(self.feature)], max_round=50)
         self.manager = GroupChatManager(groupchat=groupchat, llm_config=self.config)
         init_agents.initiate_chat(
             self.manager,
             message=input,
         )
+
+    def formTeam(self, name, feature, deliverable, communication):
+        team = {
+            "agents": self.agents,
+            "name": name,
+            "task": feature,
+            "deliverable": deliverable,
+            "communication": communication
+        }
+        return team

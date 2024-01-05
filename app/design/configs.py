@@ -8,7 +8,7 @@ config_list = autogen.config_list_from_json(
         "model": ["gpt-4"],
     },
 )
-admin_config = {
+retrieval_admin_config = {
         "task": "code",
         "docs_path": "./draft_proposal.txt",
         "chunk_token_size": 1000,
