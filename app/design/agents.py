@@ -5,7 +5,8 @@ from custom_agents.dalle import DALLEAgent
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 
 retrieval_admin_agent = {
-    "name": "admin",
+    "name": "design_1",
+    # "name": "admin",
     "type": RetrieveUserProxyAgent,
     "system_message": """Assistant who has the content of draft proposal.""",
     "human_input_mode": "NEVER",
@@ -13,7 +14,8 @@ retrieval_admin_agent = {
 }
 
 visualizer_agent = {
-    "name": "visualizer",
+    "name": "design_2",
+    # "name": "visualizer",
     "type": autogen.AssistantAgent,
     "system_message": """Visualizer. Read through the proposal and provide prompts for pictures generation based on content in every section of the proposal.
     The response must be in array of json format, each json object contains the slide_title and image_prompt.
@@ -21,7 +23,8 @@ visualizer_agent = {
 }
 
 designer_agent = {
-    "name": "designer",
+    "name": "design_3",
+    # "name": "designer",
     "type": DALLEAgent,
     "system_message": "Designer. Read through the list of slide_title and prompt pairs. Generate an image based on each of slide_titlte and prompt pairs",
 }

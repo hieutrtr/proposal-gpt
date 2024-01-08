@@ -3,7 +3,8 @@ from prompts.plan_proposal import proposal_prompt
 from functions.draft_proposal import store_draft_proposal
 
 proposal_admin_agent = {
-    "name": "admin",
+    # "name": "admin",
+    "name": "proposal_1",
     "type": autogen.UserProxyAgent,
     "system_message": """A human admin. Interact with the proposal_writer and proposal_critic to draft the proposal, proposal_critic will verify and give comments to improve the draft proposal content and structure. 
     The draft of proposal needs to be approved by this admin.
@@ -11,7 +12,8 @@ proposal_admin_agent = {
 }
 
 proposal_writer_agent = {
-    "name": "proposal_writer",
+    "name": "proposal_2",
+    # "name": "proposal_writer",
     "type": autogen.AssistantAgent,
     "system_message": proposal_prompt,
     "function_map": {
@@ -20,7 +22,8 @@ proposal_writer_agent = {
 }
 
 proposal_critic_agent = {
-    "name": "proposal_critic",
+    "name": "proposal_2",
+    # "name": "proposal_critic",
     "type": autogen.AssistantAgent,
     "system_message": "Critic. Double check the proposal from the executer and provide feedback.",
 }

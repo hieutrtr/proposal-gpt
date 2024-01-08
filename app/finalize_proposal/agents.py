@@ -6,7 +6,8 @@ from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProx
 from functions.draft_proposal import store_final_proposal
 
 finalize_admin_agent = {
-    "name": "admin",
+    "name": "finalize_1",
+    # "name": "admin",
     "type": RetrieveUserProxyAgent,
     "system_message": """Assistant who has the content of draft proposal and list image url.""",
     "human_input_mode": "NEVER",
@@ -14,7 +15,8 @@ finalize_admin_agent = {
 }
 
 proposal_finalizer_agent = {
-    "name": "proposal_finalizer",
+    "name": "finalize_2",
+    # "name": "proposal_finalizer",
     "type": autogen.AssistantAgent,
     "system_message": """Act as a professional business development specialist in AI-powered software company.
 Your goal is creating a compelling proposal slide deck for our client.
